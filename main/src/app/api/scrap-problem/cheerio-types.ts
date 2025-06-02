@@ -14,6 +14,11 @@ export interface Problem {
   emotion: string;
   rating: number;
   difficulty: string;
+  urgency: number;
+  popularity: number;
+  novelty: number;
+  feasibility: number;
+  impact_scope: number;
 }
 
 // Define source config type

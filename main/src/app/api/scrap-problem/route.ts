@@ -154,14 +154,20 @@ export async function GET(request: Request) {
         - "tags" (string[]): Relevant topics or technologies related to the problem 
         - "source" (string): Name of the source platform (e.g., Reddit, StackOverflow)
         - "rating" (number): A number from 1 (least important) to 5 (most important) indicating how impactful or urgent the problem is
+        - "urgency" (number): A number from 1 (not urgent) to 5 (very urgent) indicating how quickly the problem needs to be addressed
+        - "popularity" (number): A number from 1 (not popular) to 5 (very popular) indicating how many people are affected by this problem
         - "difficulty" (string): A string indicating the difficulty level of the problem (e.g., "easy", "medium", "hard")
-        
+        - "novelty" (number): A number from 1 (common) to 5 (very novel/unique) indicating how original or new the problem is
+        - "feasibility" (number): A number from 1 (hard to solve) to 5 (easy to solve) indicating how feasible it is to address the problem with technology
+        - "impact_scope" (string): One of "personal", "community", "global" indicating the scale of the problem's impact
+
         **Important instructions:** 
         - Each problem should be unique and not already present in the provided data.
         - Only include problems that are safe, appropriate, and suitable for building tech-based solutions. 
         - Avoid duplicates, general complaints, or vague issues. 
         - Focus on **current, solvable challenges** that could affect anyone, not just developers.
         - Exclude any content that is sexual, vulgar, promotional, or irrelevant. 
+        - Try to diversify the problems across different ratings (e.g., some high urgency, some high novelty, some high feasibility, etc.) to ensure a varied set.
         - Return the results as a clean **JSON array of objects** with the specified structure. 
         - Do not include any problem whose title already exists in this list: ${JSON.stringify(
             Array.from(existingData)
@@ -256,16 +262,23 @@ export async function GET(request: Request) {
 
         try {
           // Prepare the data to append (one row per problem)
-          const rows = newProblems.map((problem) => [
-            problem.title,
-            problem.description,
-            problem.emotion,
-            problem.tags.join(", "),
-            problem.source,
-            problem.url,
-            problem.rating?.toString() || "1",
-            problem.difficulty || "medium",
-          ]);
+          const rows = newProblems.map((problem) =>
+            [
+              problem.title,
+              problem.description,
+              problem.emotion,
+              problem.tags.join(", "),
+              problem.source,
+              problem.url,
+              problem.rating?.toString() || "1",
+              problem.difficulty || "medium",
+              problem.urgency?.toString() || "1",
+              problem.popularity?.toString() || "1",
+              problem.novelty?.toString() || "1",
+              problem.feasibility?.toString() || "1",
+              problem.impact_scope
+            ].map((value) => value?.toString() ?? "")
+          );
           await sheetsService.appendRows(rows);
 
           console.log(
