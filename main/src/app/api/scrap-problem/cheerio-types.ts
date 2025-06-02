@@ -12,6 +12,8 @@ export interface Problem {
   tags: string[];
   source: string;
   emotion: string;
+  rating: number;
+  difficulty: string;
 }
 
 // Define source config type

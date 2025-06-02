@@ -146,10 +146,26 @@ export async function GET(request: Request) {
 
         console.log("existingData length:", existingData.size);
 
-        const prompt = `You are an AI agent that extracts meaningful, real-world problems or questions shared by users on web pages. Your goal is to help developer teams discover actionable challenges they can solve with technology. Given the following HTML content from the "${source}" website, identify and return up to **10 unique, appropriate** problems or questions discussed by users. For each item, extract the following fields: - "title" (string): A clear, short summary of the problem/question - "description" (string): A concise description of the issue or context - "emotion" (string): The underlying emotion conveyed (e.g., frustration, curiosity, confusion, urgency) - "url" (string): The original post's or discussion thread's URL - "tags" (string[]): Relevant topics or technologies related to the problem - "source" (string): Name of the source platform (e.g., Reddit, StackOverflow)
-        **Important instructions:** - Only include problems that are safe, appropriate, and suitable for developers to build tech-based solutions. - Avoid duplicates, general complaints, or vague issues. - Focus on **tech-relevant, current, and solvable** challenges. - Exclude any content that is sexual, vulgar, promotional, or irrelevant. - Return the results as a clean **JSON array of objects** with the specified structure. - Do not include any problem whose title already exists in this list: ${JSON.stringify(
-          Array.from(existingData)
-        )} HTML content:\n\n${cleanedHtml}`;
+        const prompt = `You are an AI agent that extracts meaningful, real-world problems or questions shared by users on web pages. Your goal is to help teams discover actionable challenges that can be solved with technology. Given the following HTML content from the "${source}" website, identify and return up to **10 unique, appropriate** problems or questions discussed by users. For each item, extract the following fields: 
+        - "title" (string): A clear, short summary of the problem/question 
+        - "description" (string): A concise description of the issue or context 
+        - "emotion" (string): The underlying emotion conveyed (e.g., frustration, curiosity, confusion, urgency) 
+        - "url" (string): The original post's or discussion thread's URL 
+        - "tags" (string[]): Relevant topics or technologies related to the problem 
+        - "source" (string): Name of the source platform (e.g., Reddit, StackOverflow)
+        - "rating" (number): A number from 1 (least important) to 5 (most important) indicating how impactful or urgent the problem is
+        - "difficulty" (string): A string indicating the difficulty level of the problem (e.g., "easy", "medium", "hard")
+        
+        **Important instructions:** 
+        - Each problem should be unique and not already present in the provided data.
+        - Only include problems that are safe, appropriate, and suitable for building tech-based solutions. 
+        - Avoid duplicates, general complaints, or vague issues. 
+        - Focus on **current, solvable challenges** that could affect anyone, not just developers.
+        - Exclude any content that is sexual, vulgar, promotional, or irrelevant. 
+        - Return the results as a clean **JSON array of objects** with the specified structure. 
+        - Do not include any problem whose title already exists in this list: ${JSON.stringify(
+            Array.from(existingData)
+          )} HTML content:\n\n${cleanedHtml}`;
 
         const result = await model.generateContent(prompt);
 
@@ -247,6 +263,8 @@ export async function GET(request: Request) {
             problem.tags.join(", "),
             problem.source,
             problem.url,
+            problem.rating?.toString() || "1",
+            problem.difficulty || "medium",
           ]);
           await sheetsService.appendRows(rows);
 
