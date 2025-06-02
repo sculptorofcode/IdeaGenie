@@ -233,7 +233,6 @@ export async function GET(request: Request) {
               source,
               count: 0,
               problems: [],
-              html: cleanedHtml,
             },
             { status: 200 }
           );
@@ -265,7 +264,6 @@ export async function GET(request: Request) {
           source,
           count: newProblems.length,
           problems: newProblems,
-          html: cleanedHtml,
         });
       } catch (error: unknown) {
         console.error("Error using Gemini API:", error);
@@ -281,30 +279,6 @@ export async function GET(request: Request) {
           { status: 500 }
         );
       }
-
-      // Check if we found any problems
-      if (problems.length === 0) {
-        console.log(
-          "No problems found. Selector might be incorrect or the page structure has changed."
-        );
-        // Return a partial success with a warning
-        return NextResponse.json({
-          success: true,
-          warning:
-            "No problems found. The website structure might have changed.",
-          source,
-          count: 0,
-          problems: [],
-          html: html,
-        });
-      }
-
-      return NextResponse.json({
-        success: true,
-        source,
-        count: problems.length,
-        problems,
-      });
     } catch (error) {
       console.error("Error fetching URL:", error);
 
