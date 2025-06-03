@@ -126,9 +126,9 @@ export async function GET(request: Request) {
 
         const sheetRowsCount = await sheetsService.getRowsCount();
         const sheetsData = await sheetsService.readRows(
-          `${tabName}!A${
-            sheetRowsCount > 500 ? sheetRowsCount - 500 : 2
-          }:A${sheetRowsCount}`
+          `${tabName}!C${
+            sheetRowsCount > 200 ? sheetRowsCount - 200 : 2
+          }:C${sheetRowsCount}`
         );
         const existingData = new Set(sheetsData.map((row) => row[0]));
 
