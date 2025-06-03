@@ -270,7 +270,7 @@ export async function GET(request: Request) {
           // Prepare the data to append (one row per problem)
           const rows = newProblems.map((problem) => {
             const now = new Date();
-            const formatted = now.toLocaleString();
+            const formatted = now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
             return [
               formatted,
               problem.title,
