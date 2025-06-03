@@ -176,8 +176,8 @@ export async function GET(request: Request) {
         - Do not include any problems that are already present in the Google Sheets data.
         - The problems should be relevant to the source platform and its audience.
         - Do not include any problem whose title already exists in this list: ${JSON.stringify(
-            Array.from(existingData)
-          )} HTML content:\n\n${cleanedHtml}`;
+          Array.from(existingData)
+        )} HTML content:\n\n${cleanedHtml}`;
 
         const result = await model.generateContent(prompt);
 
@@ -268,9 +268,24 @@ export async function GET(request: Request) {
 
         try {
           // Prepare the data to append (one row per problem)
-          const rows = newProblems.map((problem) =>
-            [
-              new Date().toISOString(),
+          const rows = newProblems.map((problem) => {
+            const now = new Date();
+            const options = {
+              timeZone: "Asia/Kolkata",
+              timeZoneName: "short" as const,
+              weekday: "long" as const,
+              year: "numeric" as const,
+              month: "long" as const,
+              day: "numeric" as const,
+              hour: "numeric" as const,
+              minute: "2-digit" as const,
+              hour12: true,
+            };
+
+            const formatted = now.toLocaleString("en-US", options);
+            console.log(formatted);
+            return [
+              formatted,
               problem.title,
               problem.description,
               problem.emotion,
@@ -284,9 +299,9 @@ export async function GET(request: Request) {
               problem.popularity?.toString() || "1",
               problem.novelty?.toString() || "1",
               problem.feasibility?.toString() || "1",
-              problem.impact_scope
-            ].map((value) => value?.toString() ?? "")
-          );
+              problem.impact_scope,
+            ].map((value) => value?.toString() ?? "");
+          });
           await sheetsService.appendRows(rows);
 
           console.log(
