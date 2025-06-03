@@ -160,8 +160,11 @@ export async function GET(request: Request) {
         - "novelty" (number): A number from 1 (common) to 5 (very novel/unique) indicating how original or new the problem is
         - "feasibility" (number): A number from 1 (hard to solve) to 5 (easy to solve) indicating how feasible it is to address the problem with technology
         - "impact_scope" (string): One of "personal", "community", "global" indicating the scale of the problem's impact
+        - "category" (string): A category for the problem, such as "web development", "mobile apps", "data science", etc.
 
         **Important instructions:** 
+        - Focus on **real-world problems** that users are currently facing, not just general complaints or vague issues.
+        - Extract problems that are **current, solvable**, and could affect anyone, not just developers.
         - Each problem should be unique and not already present in the provided data.
         - Only include problems that are safe, appropriate, and suitable for building tech-based solutions. 
         - Avoid duplicates, general complaints, or vague issues. 
@@ -169,6 +172,9 @@ export async function GET(request: Request) {
         - Exclude any content that is sexual, vulgar, promotional, or irrelevant. 
         - Try to diversify the problems across different ratings (e.g., some high urgency, some high novelty, some high feasibility, etc.) to ensure a varied set.
         - Return the results as a clean **JSON array of objects** with the specified structure. 
+        - Ensure the JSON is valid and properly formatted.
+        - Do not include any problems that are already present in the Google Sheets data.
+        - The problems should be relevant to the source platform and its audience.
         - Do not include any problem whose title already exists in this list: ${JSON.stringify(
             Array.from(existingData)
           )} HTML content:\n\n${cleanedHtml}`;
@@ -267,6 +273,7 @@ export async function GET(request: Request) {
               problem.title,
               problem.description,
               problem.emotion,
+              problem.category || "general",
               problem.tags.join(", "),
               problem.source,
               problem.url,

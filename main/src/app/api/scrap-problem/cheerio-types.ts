@@ -19,6 +19,7 @@ export interface Problem {
   novelty: number;
   feasibility: number;
   impact_scope: number;
+  category: string;
 }
 
 // Define source config type
