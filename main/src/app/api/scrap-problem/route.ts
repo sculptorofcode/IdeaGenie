@@ -270,6 +270,7 @@ export async function GET(request: Request) {
           // Prepare the data to append (one row per problem)
           const rows = newProblems.map((problem) =>
             [
+              new Date().toISOString(),
               problem.title,
               problem.description,
               problem.emotion,
