@@ -3,7 +3,8 @@ import {
   StackOverflowClient,
   RedditClient,
   GitHubClient,
-  DevToClient
+  DevToClient,
+  StackExchangeClient
 } from "./source-clients";
 
 /**
@@ -26,6 +27,8 @@ export default class SourceClientFactory {
         return new GitHubClient(config);
       case 'devto':
         return new DevToClient(config);
+      case 'stackexchange':
+        return new StackExchangeClient(config);
       default:
         throw new Error(`Unknown source: ${source}`);
     }

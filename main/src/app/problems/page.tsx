@@ -53,8 +53,7 @@ export default function ProblemScraper() {
                             value={source}
                             onChange={(e) => setSource(e.target.value)}
                         >
-                            <option value="stackoverflow">Stack Overflow</option>
-                            <option value="reddit">Reddit</option>
+                            <option value="stackexchange">Stack Overflow</option>
                             <option value="github">GitHub</option>
                             <option value="devto">DEV Community</option>
                         </select>

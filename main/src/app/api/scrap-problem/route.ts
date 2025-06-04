@@ -6,17 +6,14 @@ import GeminiClient from "../../../services/gemini-client";
 
 // Sources to scrape programming problems from
 const sources: Record<string, SourceConfig> = {
-  stackoverflow: {
-    url: "https://stackoverflow.com/questions/",
-  },
-  reddit: {
-    url: "https://www.reddit.com/r/AskReddit/",
-  },
   github: {
     url: "https://github.com/topics/programming-challenges",
   },
   devto: {
     url: "https://dev.to/latest",
+  },
+  stackexchange: {
+    url: "https://stackoverflow.com/questions/", // default to stackoverflow, can be changed to any stackexchange site
   },
 };
 
@@ -49,6 +46,16 @@ export async function GET(request: Request) {
         source as string,
         sourceConfig
       );
+
+      // For stackexchange, return the JSON output directly for testing
+      if (source === 'stackexchange') {
+        const jsonOutput = await sourceClient.fetchContent();
+        return NextResponse.json({
+          success: true,
+          source,
+          output: JSON.parse(jsonOutput),
+        });
+      }
 
       // Fetch and clean HTML content using the specific source client
       let cleanedHtml: string;
