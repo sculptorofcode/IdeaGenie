@@ -15,6 +15,9 @@ const sources: Record<string, SourceConfig> = {
   stackexchange: {
     url: "https://stackoverflow.com/questions/", // default to stackoverflow, can be changed to any stackexchange site
   },
+  reddit: {
+    url: "https://www.reddit.com/r/programming/", // default subreddit, can be changed
+  },
 };
 
 export async function GET(request: Request) {
@@ -49,6 +52,16 @@ export async function GET(request: Request) {
 
       // For stackexchange, return the JSON output directly for testing
       if (source === 'stackexchange') {
+        const jsonOutput = await sourceClient.fetchContent();
+        return NextResponse.json({
+          success: true,
+          source,
+          output: JSON.parse(jsonOutput),
+        });
+      }
+
+      // For reddit, return the JSON output directly for testing
+      if (source === 'reddit') {
         const jsonOutput = await sourceClient.fetchContent();
         return NextResponse.json({
           success: true,
