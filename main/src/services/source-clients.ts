@@ -132,7 +132,7 @@ export class StackExchangeClient {
 
   constructor(config: SourceConfig) {
     this.config = config;
-    this.apiKey = (process.env.stack_exchange_api_key || "").trim();
+    this.apiKey = (process.env.STACK_EXCHANGE_API_KEY || "").trim();
     // Extract site from config.url (e.g., stackoverflow from https://stackoverflow.com/questions/)
     // Improved regex to handle subdomains and edge cases
     const match = this.config.url.match(/https?:\/\/(?:www\.)?([a-zA-Z0-9\-]+)\.stackexchange\.com|https?:\/\/(?:www\.)?([a-zA-Z0-9\-]+)\.com/);
