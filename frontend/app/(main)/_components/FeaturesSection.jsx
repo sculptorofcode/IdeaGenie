@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "../../../components/ui/card";
-import { BrainCircuit, Briefcase, LineChart, ScrollText } from "lucide-react";
+import { BrainCircuit, Briefcase, ScrollText } from "lucide-react";
 
 export const features = [
   {
@@ -19,28 +19,22 @@ export const features = [
       "Combine team members’ strengths to create a smart project profile.",
   },
   {
-    icon: <LineChart className="w-10 h-10 mb-4 text-primary" />,
-    title: "Hackathon & Event Tools",
-    description:
-      " Prepare with customized suggestions and insights for competitions.",
-  },
-  {
     icon: <ScrollText className="w-10 h-10 mb-4 text-primary" />,
     title: "Smart Idea Suggestions",
     description: "Get intelligent recommendations with real-time relevance.",
   },
 ];
 
-
 export default function FeaturesSection() {
   return (
-    <section 
-      className="py-20 bg-background/50" 
+    <section
+      className="py-20 bg-background/50"
       id="features"
       data-scroll
     >
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div          initial={{ opacity: 0, y: 20 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-100px" }}
           transition={{ duration: 0.6 }}
@@ -54,7 +48,7 @@ export default function FeaturesSection() {
           </p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,10 +73,10 @@ export default function FeaturesSection() {
               </div>
 
               {/* Top corner accent */}
-              <div 
+              <div
                 className="absolute top-0 right-0 w-16 h-16 overflow-hidden"
               >
-                <div 
+                <div
                   className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 grid place-items-center rounded-bl-lg"
                   style={{
                     background: index === 0 ? "linear-gradient(135deg, rgba(99, 102, 241, 0.3), transparent)" :
@@ -101,11 +95,11 @@ export default function FeaturesSection() {
                     })}
                 </div>
               </div>
-              
+
               <CardContent className="pt-8 pb-8 text-center flex flex-col items-center relative z-10">
                 <div className="flex flex-col items-center justify-center">
                   {/* Icon with enhanced styling */}
-                  <div 
+                  <div
                     className="w-16 h-16 rounded-full flex items-center justify-center mb-5 relative transition-transform group-hover:scale-110 duration-500"
                     style={{
                       background: index === 0 ? "rgba(99, 102, 241, 0.1)" :
@@ -136,7 +130,8 @@ export default function FeaturesSection() {
                   </p>
                 </div>
               </CardContent>
-            </Card>          ))}
+            </Card>
+          ))}
         </motion.div>
       </div>
     </section>

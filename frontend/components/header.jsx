@@ -126,77 +126,16 @@ export default function Header() {
         <div className="flex items-center space-x-3 md:space-x-4">
           {user && (
             <>
-              {/* Dashboard Button */}
-              <div className={`transition-all duration-300 delay-100 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}>
-                <Link href="/form">
-                  <Button
-                    variant="ghost"
-                    className={`hidden md:flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all border border-white/10 hover:border-white/20 ${
-                      scrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2'
-                    }`}
-                  >
-                    <LayoutDashboard className={`transition-transform ${scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4'}`} />
-                    <span>Hackathon & Event Tools</span>
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    className={`md:hidden text-white/90 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20 p-0 transition-all ${
-                      scrolled ? 'w-9 h-9' : 'w-10 h-10'
-                    }`}
-                    aria-label="Hackathon Tools"
-                  >
-                    <LayoutDashboard className={`transition-transform ${scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4'}`} />
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Growth Tools Dropdown */}
+              {/* Start Research Button (styled like Growth Tools) */}
               <div className={`transition-all duration-300 delay-200 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button 
-                      className={`flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-purple-500/30 transition-all border-0 ${
-                        scrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2'
-                      }`}
-                    >
-                      <StarsIcon className={`transition-transform ${scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4'}`} />
-                      <span className="hidden md:block">Growth Tools</span>
-                      <ChevronDown className={`transition-transform duration-200 ${scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4'}`} />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent 
-                    align="end" 
-                    className="w-56 p-2 rounded-xl shadow-xl bg-black/80 backdrop-blur-lg border border-white/20"
-                  >
-                    <DropdownMenuItem asChild className="p-0 hover:bg-white/10">
-                      <Link 
-                        href="/form" 
-                        className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-white/90 hover:text-white transition-colors"
-                      >
-                        <FileText className="h-4 w-4 text-purple-400" />
-                        AI‑Powered Idea Generator
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="p-0 hover:bg-white/10">
-                      <Link
-                        href="/form"
-                        className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-white/90 hover:text-white transition-colors"
-                      >
-                        <PenBox className="h-4 w-4 text-blue-400" />
-                        Team Skill Mapping
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="p-0 hover:bg-white/10">
-                      <Link 
-                        href="/form" 
-                        className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-white/90 hover:text-white transition-colors"
-                      >
-                        <GraduationCap className="h-4 w-4 text-indigo-400" />
-                        Smart Idea Suggestions
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Button
+                  className={`flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-purple-500/30 transition-all border-0 ${
+                    scrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2'
+                  }`}
+                >
+                  <StarsIcon className={`transition-transform ${scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4'}`} />
+                  <span className="hidden md:block">Start Research</span>
+                </Button>
               </div>
             </>
           )}          
