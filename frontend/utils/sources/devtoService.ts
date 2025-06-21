@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { NextRequest, NextResponse } from 'next/server';
 
 // Types
-interface DevToUser {
+export interface DevToUser {
   username?: string;
 }
 
-interface DevToComment {
+export interface DevToComment {
   id_code: string;
   body_html?: string;
   body_markdown?: string;
@@ -16,7 +15,7 @@ interface DevToComment {
   parent?: { id_code: string };
 }
 
-interface NestedComment {
+export interface NestedComment {
   id: string;
   body: string;
   author: string;
@@ -25,7 +24,7 @@ interface NestedComment {
   children: NestedComment[];
 }
 
-interface DevToPost {
+export interface DevToPost {
   title: string;
   url: string;
   author: string;
@@ -38,8 +37,12 @@ interface DevToPost {
   comments: NestedComment[];
 }
 
-// Function to organize comments into nested structure
-function organizeComments(comments: DevToComment[]): NestedComment[] {
+/**
+ * Organizes comments into a nested parent-child structure
+ * @param comments - The flat array of comments to organize
+ * @returns An array of comments with nested children
+ */
+export function organizeComments(comments: DevToComment[]): NestedComment[] {
   const commentMap = new Map<string, NestedComment>();
   const rootComments: NestedComment[] = [];
 
@@ -72,6 +75,13 @@ function organizeComments(comments: DevToComment[]): NestedComment[] {
   return rootComments;
 }
 
+/**
+ * Fetches posts from Dev.to based on keyword or tag
+ * @param keyword - The keyword to search for
+ * @param tag - The tag to filter by
+ * @param limit - Maximum number of posts to retrieve
+ * @returns An array of Dev.to posts
+ */
 export async function fetchDevToPosts(keyword: string | null, tag: string | null, limit: number = 10): Promise<DevToPost[]> {
     try {
         let response;
@@ -181,37 +191,35 @@ export async function fetchDevToPosts(keyword: string | null, tag: string | null
     }
 }
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
-    try {
-        const { searchParams } = new URL(request.url);
-        const keyword = searchParams.get('keyword');
-        const tag = searchParams.get('tag');
-        const limitParam = searchParams.get('limit');
-        const limit = limitParam ? parseInt(limitParam, 10) : 10;
+/**
+ * Search for Dev.to posts directly without going through API routes
+ * This is used as a replacement for the API route
+ * @param keyword Search keyword
+ * @returns Array of Dev.to posts
+ */
+export async function searchDevToPosts(keyword: string): Promise<DevToPost[]> {
+  return await fetchDevToPosts(keyword, null, 10);
+}
 
-        // Validate limit
-        if (isNaN(limit) || limit < 1 || limit > 100) {
-            return NextResponse.json(
-                { error: 'Invalid limit parameter. Must be a number between 1 and 100.' },
-                { status: 400 }
-            );
-        }
-
-        const posts = await fetchDevToPosts(keyword, tag, limit);
-        
-        return NextResponse.json({
-            success: true,
-            data: posts,
-            count: posts.length
-        });
-    } catch (error) {
-        console.error('Error in Dev.to API route:', error);
-        return NextResponse.json(
-            { 
-                error: 'Failed to fetch Dev.to posts',
-                details: error instanceof Error ? error.message : 'Unknown error'
-            },
-            { status: 500 }
-        );
-    }
+/**
+ * Validates parameters for Dev.to API requests
+ * @param keyword - The keyword parameter to validate
+ * @param tag - The tag parameter to validate
+ * @returns An object indicating validity and any error message
+ */
+export function validateDevToParams(keyword?: string | null, tag?: string | null): {
+  isValid: boolean;
+  errorMessage: string | null;
+} {
+  if (!keyword && !tag) {
+    return {
+      isValid: false,
+      errorMessage: 'Either keyword or tag parameter is required'
+    };
+  }
+  
+  return {
+    isValid: true,
+    errorMessage: null
+  };
 }

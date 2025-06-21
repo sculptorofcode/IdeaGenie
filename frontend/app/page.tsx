@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef } from "react";
-import { useUser } from "@civic/auth/react";
 import HeroSection from "../components/hero";
 import HowItWorksSection from "./(main)/_components/HowItWorksSection";
 import FeaturesSection from "./(main)/_components/FeaturesSection";
