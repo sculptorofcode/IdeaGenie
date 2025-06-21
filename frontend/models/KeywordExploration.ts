@@ -17,7 +17,7 @@ export interface ISubKeyword {
 }
 
 export interface IKeywordExploration extends Document {
-  _id: string; // Mongoose will generate this
+  _id: mongoose.Types.ObjectId; // Mongoose will generate this
   userId: mongoose.Types.ObjectId;
   mainKeyword: string;
   country: string;
