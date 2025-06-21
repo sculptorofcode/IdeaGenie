@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ApiSimulationStep } from '@/types/mindmap';
+import { ApiSimulationStep } from '../../../types/mindmap';
 
 interface SimulationStatusProps {
   isSimulating: boolean;

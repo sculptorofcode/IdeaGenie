@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { handleKeywordGetRequest } from '../keyword_generator_api/route';
-import { fetchDevToPosts } from '../dev_to_api/route';
+import { handleKeywordGetRequest } from '../keyword_generator_api/keyword_generator_api';
+import { fetchDevToPosts } from '../../../utils/sources/devtoService';
 import sendPrompt from '../../../utils/gemini/connect_gemini';
 import mongoose from 'mongoose';
 import { IKeywordExploration } from '../../../models/KeywordExploration';

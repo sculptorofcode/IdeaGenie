@@ -59,7 +59,7 @@ const HeroSection = () => {
     <section className="w-full pt-36 md:pt-48 pb-10">
       <div className="space-y-6 text-center">
         <div className="space-y-6 mx-auto">
-          <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl xl:text-7xl gradient-title animate-gradient">
+          <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl xl:text-7xl gradient-title">
             {displayText}
             <span className="typing-cursor">|</span>
           </h1>          <p className="mx-auto max-w-[600px] text-gray-3 dark:text-gray-2 md:text-xl">

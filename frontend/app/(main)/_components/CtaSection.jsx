@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useUser } from "@civic/auth/react";
 import { Button } from "../../../components/ui/button";
@@ -26,8 +25,8 @@ export default function CtaSection() {
       {/* Animated background elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/20 via-background to-background"></div>
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-secondary/10 blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-72 h-72 rounded-full bg-accent/10 blur-3xl animate-float-delay"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-secondary/10 blur-3xl"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-72 h-72 rounded-full bg-accent/10 blur-3xl"></div>
       </div>
 
       <div className="container relative z-10 px-4">
@@ -35,33 +34,15 @@ export default function CtaSection() {
           {/* Glowing border container */}
           <div className="p-[2px] rounded-2xl bg-gradient-to-r from-primary via-secondary to-accent max-w-4xl mx-auto shadow-lg">
             <div className="bg-background/90 backdrop-blur-md rounded-2xl p-12 md:p-16">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6 }}
-                className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary sm:text-5xl md:text-6xl"
-              >
+              <h2 className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary sm:text-5xl md:text-6xl">
                 Ready to Build Your Next Big Project?
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: false }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto"
-              >
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
                 Join thousands of tech teams and innovators turning ideas into
                 reality with AI-powered suggestions and real-world challenges —
                 only on IdeaGenie.
-              </motion.p>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                className="mt-10"
-              >
+              </p>
+              <div className="mt-10">
                 {user ? (
                   <Link href="/form" passHref>
                     <Button
@@ -102,13 +83,13 @@ export default function CtaSection() {
                     </Button>
                   </div>
                 )}
-              </motion.div>
+              </div>
             </div>
           </div>
 
           {/* Floating animated elements */}
-          <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-primary/10 blur-xl animate-float-slow z-0"></div>
-          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-secondary/10 blur-xl animate-float-delay-slow z-0"></div>
+          <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-primary/10 blur-xl z-0"></div>
+          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-secondary/10 blur-xl z-0"></div>
         </div>
       </div>
     </section>

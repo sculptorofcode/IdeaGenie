@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionItem,
@@ -57,31 +56,19 @@ export default function FaqSection() {
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-text">
             Frequently Asked Questions
           </h2>
           <p className="text-center text-muted-foreground max-w-3xl mx-auto">
             Find answers to common questions about our platform
           </p>
-        </motion.div>
+        </div>
 
         <div className="max-w-4xl mx-auto">
           <Accordion type="multiple" className="w-full space-y-4">
             {faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-              >
+              <div key={index} className="">
                 <AccordionItem
                   value={`item-${index}`}
                   className="overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] hover:bg-white/10 transition-all"
@@ -113,7 +100,7 @@ export default function FaqSection() {
                     <div className="pl-12">{faq.answer}</div>
                   </AccordionContent>
                 </AccordionItem>
-              </motion.div>
+              </div>
             ))}
           </Accordion>
         </div>
