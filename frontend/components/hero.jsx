@@ -4,13 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { useUser } from "@civic/auth/react";
 
 const HeroSection = () => {
   const imageRef = useRef(null);
   const [displayText, setDisplayText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
+  const { user, signIn } = useUser();
   const fullText = "IDEAGENIE";
 
   useEffect(() => {
@@ -56,18 +57,17 @@ const HeroSection = () => {
           </h1>
           <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
             Ignite innovation with smart team collaboration and AI-powered
-            project ideas{" "}
+            project ideas
           </p>
         </div>
         <div className="flex justify-center space-x-4">
-          <SignedIn>
+          {user ? (
             <Link href="/form">
               <Button size="lg" className="px-8">
                 Get Started
               </Button>
             </Link>
-          </SignedIn>
-          <SignedOut>
+          ) : (
             <div
               className={`transition-all duration-300 delay-300 ${
                 isMounted
@@ -75,16 +75,11 @@ const HeroSection = () => {
                   : "translate-y-2 opacity-0"
               }`}
             >
-              <SignInButton>
-                <Button
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10 hover:text-white hover:border-white/50 shadow-sm backdrop-blur-sm"
-                >
-                  Get Started
-                </Button>
-              </SignInButton>
+              <Button size="lg" className="px-8" onClick={signIn}>
+                Get Started
+              </Button>
             </div>
-          </SignedOut>
+          )}
         </div>
         <div className="hero-image-wrapper mt-5 md:mt-0">
           <div ref={imageRef} className="hero-image relative inline-block">

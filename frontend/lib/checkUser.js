@@ -1,8 +1,8 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getUser } from "@civic/auth/nextjs";
 import { db } from "./prisma";
 
 export const checkUser = async () => {
-  const user = await currentUser();
+  const user = await getUser();
 
   if (!user) {
     return null;
@@ -11,7 +11,7 @@ export const checkUser = async () => {
   try {
     const loggedInUser = await db.user.findUnique({
       where: {
-        clerkUserId: user.id,
+        civicUserId: user.sub,
       },
     });
 
@@ -19,14 +19,12 @@ export const checkUser = async () => {
       return loggedInUser;
     }
 
-    const name = `${user.firstName} ${user.lastName}`;
-
-    const newUser = await db.user.create({
+    const name = `${user.firstName} ${user.lastName}`;    const newUser = await db.user.create({
       data: {
-        clerkUserId: user.id,
-        name,
-        imageUrl: user.imageUrl,
-        email: user.emailAddresses[0].emailAddress,
+        civicUserId: user.sub,
+        name: user.name || "User",
+        imageUrl: user.picture || "",
+        email: user.email || "",
       },
     });
 

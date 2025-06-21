@@ -1,5 +1,16 @@
-import { SignIn } from "@clerk/nextjs";
+"use client";
+import { SignInButton } from "@civic/auth/react";
+import { Button } from "../../../components/ui/button";
 
 export default function Page() {
-  return <SignIn />;
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold mb-6">Sign In</h1>
+        <SignInButton>
+          <Button>Sign in with Civic</Button>
+        </SignInButton>
+      </div>
+    </div>
+  );
 }
