@@ -1,23 +1,36 @@
 import { getUser } from "@civic/auth/nextjs";
+import { getCurrentUser } from "../utils/authUtils";
 
 export const checkUser = async () => {
-  const user = await getUser();
-
-  if (!user) {
-    return null;
-  }
-
   try {
-    // Return the basic user info from Civic Auth
-    // without database operations
+    // Use our enhanced getCurrentUser function that checks both Auth and Database
+    const user = await getCurrentUser();
+    
+    if (!user) {
+      return null;
+    }
+    
     return {
-      civicUserId: user.sub,
-      name: user.name || "User",
+      id: user._id || null,
+      civicUserId: user.civicUserId,
+      name: user.username || "User",
       imageUrl: user.picture || "",
       email: user.email || "",
-      // Include any other necessary user properties
     };
   } catch (error) {
     console.log(error.message);
+    
+    // Fall back to basic auth if there's an error
+    const authUser = await getUser();
+    if (authUser) {
+      return {
+        civicUserId: authUser.sub,
+        name: authUser.name || "User",
+        imageUrl: authUser.picture || "",
+        email: authUser.email || "",
+      };
+    }
+    
+    return null;
   }
 };

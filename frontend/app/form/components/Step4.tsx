@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { downloadRoadmap } from "./formHelpers";
-import MindMapScene from "../../../components/mindmap/MindMapScene";
-import { useToast } from "../../../hooks/use-toast"; // Import toast for notifications
-import { PipelineProvider } from "../../../components/PipelineContext";
+import React, { useEffect, useState, useRef } from "react";
+import { useToast } from "../../../hooks/use-toast";
 import { useRouter } from "next/navigation";
 
 type Step4Props = {
@@ -33,40 +30,108 @@ const Step4: React.FC<Step4Props> = ({ prevStep, formData }) => {
   const { toast } = useToast();
   const router = useRouter();
 
+  // Extract needed values from formData to avoid dependency issues
+  const initialPrompt = formData.initialPrompt;
+  const projectGoal = formData.projectGoal;
+  const projectCategory = formData.projectCategory;
+  
+  // Use refs to prevent infinite loops and track execution
+  const pipelineExecuted = useRef(false);
+  const userIdRef = useRef<string>("");
+
   useEffect(() => {
-    // Run the keyword pipeline based on the user's project details
+    // Flag to track if component is mounted
+    let isMounted = true;
+    
     const runPipeline = async () => {
+      // Skip if pipeline already executed
+      if (pipelineExecuted.current) return;
+      pipelineExecuted.current = true;
+      
       try {
         setLoading(true);
         setCurrentStep("Identifying keywords from your project details...");
         setProgressValue(10);
-
+        
         // Use the project title/goal as the main keyword
-        const mainKeyword = formData.initialPrompt || formData.projectGoal || formData.projectCategory;
+        const mainKeyword = initialPrompt || projectGoal || projectCategory;
         if (!mainKeyword) {
           throw new Error("Could not determine main keyword from project details");
         }
-
-        // Generate a unique user ID with timestamp to avoid collisions
-        const timestamp = new Date().getTime();
-        const randomNum = Math.floor(Math.random() * 10000);
-        const generatedUserId = `user-${timestamp}-${randomNum}`;
-        setUserId(generatedUserId);
+        
+        // Try to fetch the current user using a client-safe approach
+        try {
+          // Make a client-side API request to a Next.js API route
+          const response = await fetch('/api/auth/session', {
+            method: 'GET',
+            credentials: 'include', // Include cookies with the request
+          });
+            
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.user && data.user.id) {
+              userIdRef.current = data.user.id;
+              console.log("Using authenticated user ID:", userIdRef.current);
+            } else {
+              // No authenticated user - redirect to sign in
+              if (isMounted) {
+                setError("Authentication required. Please sign in first.");
+                toast({
+                  title: "Authentication Required",
+                  description: "You need to be signed in to generate a project roadmap.",
+                });
+                
+                // Redirect to sign in page after a brief delay
+                setTimeout(() => {
+                  if (isMounted) {
+                    router.push("/sign-in");
+                  }
+                }, 2000);
+              }
+              throw new Error("Authentication required");
+            }
+          } else {
+            throw new Error(`Failed to fetch user session: ${response.statusText}`);
+          }
+        } catch (authError) {
+          console.error("Error getting authenticated user:", authError);
+          
+          if (isMounted) {
+            setError("Authentication required. Please sign in to continue.");
+            toast({
+              title: "Authentication Failed",
+              description: "There was a problem with authentication. Please sign in again.",
+            });
+            
+            // Redirect to sign in page after a brief delay
+            setTimeout(() => {
+              if (isMounted) {
+                router.push("/sign-in");
+              }
+            }, 2000);
+          }
+          throw authError;
+        }
+        
+        // Set user ID in state if we got a valid authenticated ID
+        if (isMounted && userIdRef.current) {
+          setUserId(userIdRef.current);
+        }
         
         // Step 1: Keyword analysis
-        setCurrentStep("Analyzing keywords and topics...");
-        setProgressValue(25);
+        if (isMounted) setCurrentStep("Analyzing keywords and topics...");
+        if (isMounted) setProgressValue(25);
         
-        // Step 2: Call the pipeline directly instead of using an API route
-        setCurrentStep("Processing your project details...");
-        setProgressValue(40);
+        // Step 2: Call the pipeline directly
+        if (isMounted) setCurrentStep("Processing your project details...");
+        if (isMounted) setProgressValue(40);
         
         // Import the pipeline utility
         const { executeKeywordPipeline } = await import("../../../utils/pipeline/keywordPipelineUtils");
         
         // Execute the pipeline directly
         const result = await executeKeywordPipeline(
-          generatedUserId,
+          userIdRef.current,
           mainKeyword,
           "en-US"
         );
@@ -74,25 +139,30 @@ const Step4: React.FC<Step4Props> = ({ prevStep, formData }) => {
         if (!result.success) {
           throw new Error(result.error || "Pipeline execution failed");
         }
-        setProgressValue(65);
-        setCurrentStep("Generating mindmap visualization...");
+        
+        if (isMounted) setProgressValue(65);
+        if (isMounted) setCurrentStep("Generating mindmap visualization...");
         
         // Simulate additional processing time
         await new Promise(resolve => setTimeout(resolve, 1500));
-        setProgressValue(85);
-        setCurrentStep("Finalizing your project roadmap...");
+        if (isMounted) setProgressValue(85);
+        if (isMounted) setCurrentStep("Finalizing your project roadmap...");
         
         await new Promise(resolve => setTimeout(resolve, 1000));
-        setProgressValue(100);
-        setCurrentStep("Pipeline completed successfully!");
+        if (isMounted) setProgressValue(100);
+        if (isMounted) setCurrentStep("Pipeline completed successfully!");
         
-        toast({
-          title: "Analysis complete",
-          description: "Your project roadmap has been generated successfully!",
-        });
+        if (isMounted) {
+          toast({
+            title: "Analysis complete",
+            description: "Your project roadmap has been generated successfully!",
+          });
+        }
 
-        // Short delay to show completion message before redirecting
+        // Delay to show completion message before redirecting
         setTimeout(() => {
+          if (!isMounted) return;
+          
           setLoading(false);
           setRoadmapGenerated(true);
           
@@ -105,31 +175,43 @@ const Step4: React.FC<Step4Props> = ({ prevStep, formData }) => {
           
           // Redirect after a brief delay
           setTimeout(() => {
-            router.push(`/${generatedUserId}/mindmap`);
+            if (isMounted) {
+              router.push(`/${userIdRef.current}/mindmap`);
+            }
           }, 2000);
         }, 1500);
 
       } catch (err) {
+        if (!isMounted) return;
+        
         console.error("Pipeline error:", err);
         setError(err instanceof Error ? err.message : "An unknown error occurred");
+        
         toast({
           title: "Error during analysis",
           description: err instanceof Error ? err.message : "Failed to generate your roadmap"
         });
         
-        // Generate a fallback user ID if error occurs and we don't have one
-        if (!userId) {
+        // Use userIdRef if set, otherwise generate a fallback
+        let redirectId = userIdRef.current;
+        
+        if (!redirectId) {
+          // Generate fallback user ID
           const fallbackUserId = `demo-user-${Math.floor(Math.random() * 1000)}`;
-          setUserId(fallbackUserId);
+          redirectId = fallbackUserId;
+          userIdRef.current = fallbackUserId;
+          
+          if (isMounted) setUserId(fallbackUserId);
         }
         
-        // Fall back to showing the mindmap even if the pipeline fails
+        // Fall back to showing the mindmap even if pipeline fails
         setTimeout(() => {
+          if (!isMounted) return;
+          
           setLoading(false);
           setRoadmapGenerated(true);
-          
-          // Show redirect message
           setRedirecting(true);
+          
           toast({
             title: "Redirecting to default mindmap",
             description: "Taking you to a mindmap visualization..."
@@ -137,14 +219,22 @@ const Step4: React.FC<Step4Props> = ({ prevStep, formData }) => {
           
           // Redirect after a brief delay
           setTimeout(() => {
-            router.push(`/${userId}/mindmap`);
+            if (isMounted) {
+              router.push(`/${redirectId}/mindmap`);
+            }
           }, 2000);
         }, 2000);
       }
     };
 
+    // Run the pipeline once when component mounts
     runPipeline();
-  }, [formData, toast, router, userId]);
+    
+    // Cleanup function to prevent state updates after unmounting
+    return () => {
+      isMounted = false;
+    };
+  }, [initialPrompt, projectGoal, projectCategory, router, toast]); // userId excluded as it's set inside
 
   return (
     <div className="step-content active" id="step4">
