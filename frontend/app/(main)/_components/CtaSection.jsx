@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useUser } from "@civic/auth/react";
+import { Button } from "../../../components/ui/button";
 
 export default function CtaSection() {
   const [isMounted, setIsMounted] = useState(false);
@@ -34,17 +35,17 @@ export default function CtaSection() {
           {/* Glowing border container */}
           <div className="p-[2px] rounded-2xl bg-gradient-to-r from-primary via-secondary to-accent max-w-4xl mx-auto shadow-lg">
             <div className="bg-background/90 backdrop-blur-md rounded-2xl p-12 md:p-16">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
+              <motion.h2                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.6 }}
                 className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary sm:text-5xl md:text-6xl"
               >
                 Ready to Build Your Next Big Project?
               </motion.h2>
-              <motion.p
-                initial={{ opacity: 0 }}
+              <motion.p                initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
+                viewport={{ once: false }}
                 transition={{ delay: 0.2, duration: 0.6 }}
                 className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto"
               >
@@ -52,9 +53,9 @@ export default function CtaSection() {
                 reality with AI-powered suggestions and real-world challenges
                 — only on IdeaGenie.
               </motion.p>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+              <motion.div                initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false }}
                 transition={{ delay: 0.4, duration: 0.5 }}
                 className="mt-10"
               >

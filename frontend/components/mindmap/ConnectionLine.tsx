@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MindMapNode } from '@/types/mindmap';
+import { MindMapNode } from '../../types/mindmap';
 
 interface ConnectionLineProps {
   fromNode: MindMapNode;

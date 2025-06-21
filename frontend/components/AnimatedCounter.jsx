@@ -6,8 +6,11 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const observerRef = useRef(null);
+  const hasStarted = useRef(false);
 
   const startCounting = useCallback(() => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
     const startTime = Date.now();
     const endTime = startTime + duration;
 
@@ -29,12 +32,15 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
   }, [duration, target]);
 
   useEffect(() => {
-    if (!observerRef.current && ref.current) {
+    if (ref.current && !observerRef.current) {
       observerRef.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
             startCounting();
-            observerRef.current.disconnect();
+            if (observerRef.current) {
+              observerRef.current.disconnect();
+              observerRef.current = null;
+            }
           }
         },
         { threshold: 0.1 }
@@ -46,6 +52,7 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
+        observerRef.current = null;
       }
     };
   }, [startCounting]);

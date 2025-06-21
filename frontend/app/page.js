@@ -10,8 +10,6 @@ import FaqSection from "./(main)/_components/FaqSection";
 import CtaSection from "./(main)/_components/CtaSection";
 
 export default function Home() {
-  const { user, isLoaded } = useUser();
-  const testimonialRef = useRef(null);
   const featuresRef = useRef(null);
   const howItWorksRef = useRef(null);
   const statsRef = useRef(null);

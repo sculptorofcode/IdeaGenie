@@ -2,6 +2,35 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { Card, CardContent } from "../../../components/ui/card";
+import { BrainCircuit, Briefcase, LineChart, ScrollText } from "lucide-react";
+
+export const features = [
+  {
+    icon: <BrainCircuit className="w-10 h-10 mb-4 text-primary" />,
+    title: "AI‑Powered Idea Generator",
+    description:
+      "  Discover tailored project ideas based on your team's skills and current trends.",
+  },
+  {
+    icon: <Briefcase className="w-10 h-10 mb-4 text-primary" />,
+    title: "Team Skill Mapping",
+    description:
+      "Combine team members’ strengths to create a smart project profile.",
+  },
+  {
+    icon: <LineChart className="w-10 h-10 mb-4 text-primary" />,
+    title: "Hackathon & Event Tools",
+    description:
+      " Prepare with customized suggestions and insights for competitions.",
+  },
+  {
+    icon: <ScrollText className="w-10 h-10 mb-4 text-primary" />,
+    title: "Smart Idea Suggestions",
+    description: "Get intelligent recommendations with real-time relevance.",
+  },
+];
+
 
 export default function FeaturesSection() {
   return (
@@ -11,10 +40,9 @@ export default function FeaturesSection() {
       data-scroll
     >
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+        <motion.div          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: false, margin: "-100px" }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
@@ -26,7 +54,12 @@ export default function FeaturesSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.6, delay: 0.2 }}>
           {features.map((feature, index) => (
             <Card
               key={index}
@@ -50,14 +83,23 @@ export default function FeaturesSection() {
                 className="absolute top-0 right-0 w-16 h-16 overflow-hidden"
               >
                 <div 
-                  className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"
+                  className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 grid place-items-center rounded-bl-lg"
                   style={{
                     background: index === 0 ? "linear-gradient(135deg, rgba(99, 102, 241, 0.3), transparent)" :
                              index === 1 ? "linear-gradient(135deg, rgba(16, 185, 129, 0.3), transparent)" :
                              index === 2 ? "linear-gradient(135deg, rgba(245, 158, 11, 0.3), transparent)" :
                              "linear-gradient(135deg, rgba(34, 197, 94, 0.3), transparent)"
                   }}
-                ></div>
+                >
+                    {React.cloneElement(feature.icon, {
+                        className: `w-6 h-6 opacity-80 ${
+                            index === 0 ? "text-primary" :
+                            index === 1 ? "text-secondary" :
+                            index === 2 ? "text-accent" :
+                            "text-success"
+                        }`
+                    })}
+                </div>
               </div>
               
               <CardContent className="pt-8 pb-8 text-center flex flex-col items-center relative z-10">
@@ -94,9 +136,8 @@ export default function FeaturesSection() {
                   </p>
                 </div>
               </CardContent>
-            </Card>
-          ))}
-        </div>
+            </Card>          ))}
+        </motion.div>
       </div>
     </section>
   );
