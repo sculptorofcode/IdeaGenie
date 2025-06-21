@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -29,30 +29,8 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const observerRef = useRef(null);
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          startCounting();
-          observerRef.current.unobserve(ref.current);
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (ref.current) {
-      observerRef.current.observe(ref.current);
-    }
-
-    return () => {
-      if (observerRef.current && ref.current) {
-        observerRef.current.unobserve(ref.current);
-      }
-    };
-  }, []);
-
-  const startCounting = () => {
+  
+  const startCounting = useCallback(() => {
     const startTime = Date.now();
     const endTime = startTime + duration;
 
@@ -71,7 +49,28 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
     };
 
     requestAnimationFrame(updateCount);
-  };
+  }, [duration, target]);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startCounting();
+          observerRef.current.unobserve(ref.current);
+        }
+      },
+      { threshold: 0.5 }
+    );    if (ref.current) {
+      observerRef.current.observe(ref.current);
+    }
+
+    const currentRef = ref.current; // Store the ref value in a variable
+
+    return () => {
+      if (observerRef.current && currentRef) {
+        observerRef.current.unobserve(currentRef);      }
+    };
+  }, [startCounting]);
 
   return <span ref={ref}>{count}+</span>;
 };

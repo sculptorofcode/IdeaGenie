@@ -1,6 +1,6 @@
 "use client";
 import { SignInButton } from "@civic/auth/react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   return (

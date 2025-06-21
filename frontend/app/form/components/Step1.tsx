@@ -18,7 +18,7 @@ const Step1: React.FC<Step1Props> = ({ initialPrompt, setInitialPrompt, nextStep
     <div className="step-content active" id="step1">
       <h1 className="step-title">Start Your Project</h1>
       <div className="form-group">
-        <label className="form-label">What's your project idea?</label>
+        <label className="form-label">What&apos;s your project idea?</label>
         <textarea
           className="form-control"
           id="initialPrompt"
