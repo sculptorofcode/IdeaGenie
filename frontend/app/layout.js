@@ -10,8 +10,52 @@ import SmoothScrollInit from '../components/smooth-scroll-init';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "IDEAGENIE",
-  description: "",
+  title: "IdeaGenie",
+  description: "IdeaGenie - Transforming careers through innovative AI solutions and cutting-edge technology.",
+  keywords: [
+    "IdeaGenie",
+    "AI",
+    "Innovation",
+    "Career",
+    "Technology",
+    "Hack4Bengal",
+    "Ideation",
+    "Productivity",
+    "Next.js",
+    "CivicAuth"
+  ],
+  authors: [
+    { name: "405 Found", url: "https://saikatroy.vercel.app" }
+  ],
+  creator: "405 Found",
+  publisher: "405 Found",
+  applicationName: "IdeaGenie",
+  icons: {
+    icon: "/Logos.svg"
+  },
+  themeColor: "#18181b",
+  openGraph: {
+    title: "IdeaGenie",
+    description: "Transforming careers through innovative AI solutions and cutting-edge technology.",
+    url: "https://your-ideagenie-domain.com",
+    siteName: "IdeaGenie",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "IdeaGenie Open Graph Image"
+      }
+    ],
+    locale: "en_US",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "IdeaGenie",
+    description: "Transforming careers through innovative AI solutions and cutting-edge technology.",
+    images: ["/og-image.png"]
+  }
 };
 
 export default function RootLayout({ children }) {
