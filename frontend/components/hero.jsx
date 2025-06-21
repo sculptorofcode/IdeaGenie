@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import Link from "next/link";
+import Link from "next/link"; 
 import { useUser } from "@civic/auth/react";
 
 const HeroSection = () => {
