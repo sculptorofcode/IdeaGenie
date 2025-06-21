@@ -13,6 +13,13 @@ const nextConfig = {
   experimental: {
     esmExternals: true,
   },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': process.cwd(),
+    };
+    return config;
+  },
 };
 
 const withCivicAuth = createCivicAuthPlugin({

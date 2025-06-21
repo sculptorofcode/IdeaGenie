@@ -1,4 +1,3 @@
-import { db } from "@/lib/prisma";
 import { inngest } from "./client";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -9,10 +8,14 @@ export const generateIndustryInsights = inngest.createFunction(
   { name: "Generate Industry Insights" },
   { cron: "0 0 * * 0" }, // Run every Sunday at midnight
   async ({ event, step }) => {
+    // TODO: Replace this with an API call to the backend service
     const industries = await step.run("Fetch industries", async () => {
-      return await db.industryInsight.findMany({
-        select: { industry: true },
-      });
+      // Mock data or fetch from API instead of Prisma
+      return [
+        { industry: "Technology" },
+        { industry: "Healthcare" },
+        { industry: "Finance" }
+      ];
     });
 
     for (const { industry } of industries) {
@@ -47,17 +50,21 @@ export const generateIndustryInsights = inngest.createFunction(
       const text = res.response.candidates[0].content.parts[0].text || "";
       const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
 
-      const insights = JSON.parse(cleanedText);
-
-      await step.run(`Update ${industry} insights`, async () => {
-        await db.industryInsight.update({
-          where: { industry },
-          data: {
-            ...insights,
-            lastUpdated: new Date(),
-            nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          },
-        });
+      const insights = JSON.parse(cleanedText);      await step.run(`Update ${industry} insights`, async () => {
+        // TODO: Replace with an API call to update data in the backend
+        console.log(`Updated insights for ${industry}:`, insights);
+        
+        // Example of how to call an API instead of using Prisma directly:
+        // await fetch('/api/industry-insights', {
+        //   method: 'PUT',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({
+        //     industry,
+        //     ...insights,
+        //     lastUpdated: new Date(),
+        //     nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        //   })
+        // });
       });
     }
   }

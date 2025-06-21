@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -29,30 +29,8 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const observerRef = useRef(null);
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          startCounting();
-          observerRef.current.unobserve(ref.current);
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (ref.current) {
-      observerRef.current.observe(ref.current);
-    }
-
-    return () => {
-      if (observerRef.current && ref.current) {
-        observerRef.current.unobserve(ref.current);
-      }
-    };
-  }, []);
-
-  const startCounting = () => {
+  
+  const startCounting = useCallback(() => {
     const startTime = Date.now();
     const endTime = startTime + duration;
 
@@ -71,7 +49,28 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
     };
 
     requestAnimationFrame(updateCount);
-  };
+  }, [duration, target]);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startCounting();
+          observerRef.current.unobserve(ref.current);
+        }
+      },
+      { threshold: 0.5 }
+    );    if (ref.current) {
+      observerRef.current.observe(ref.current);
+    }
+
+    const currentRef = ref.current; // Store the ref value in a variable
+
+    return () => {
+      if (observerRef.current && currentRef) {
+        observerRef.current.unobserve(currentRef);      }
+    };
+  }, [startCounting]);
 
   return <span ref={ref}>{count}+</span>;
 };
@@ -130,19 +129,19 @@ export default function LandingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
             <div className="flex flex-col items-center justify-center space-y-2">
               <h3 className="text-4xl font-bold">
-                <AnimatedCounter target={50} />
+              <AnimatedCounter target={50} duration={9000} />
               </h3>
               <p className="text-muted-foreground">Domains Covered</p>
             </div>
             <div className="flex flex-col items-center justify-center space-y-2">
               <h3 className="text-4xl font-bold">
-                <AnimatedCounter target={1000} duration={10} />
+                <AnimatedCounter target={1000} duration={9000} />
               </h3>
               <p className="text-muted-foreground">Unique Ideas Generated</p>
             </div>
             <div className="flex flex-col items-center justify-center space-y-2">
               <h3 className="text-4xl font-bold">
-                <AnimatedCounter target={95} duration={1500} />
+                <AnimatedCounter target={95} duration={9000} />
               </h3>
               <p className="text-muted-foreground">Team Matches Suggested</p>
             </div>
