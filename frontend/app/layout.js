@@ -4,6 +4,8 @@ import { CivicAuthProvider } from "@civic/auth/nextjs";
 import { Toaster } from "sonner";
 import Header from "../components/header";
 import { ThemeProvider } from "../components/theme-provider";
+import ScrollToTopButton from '../components/scroll-to-top';
+import SmoothScrollInit from '../components/smooth-scroll-init';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +28,10 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
+            <SmoothScrollInit />
             <Header />
             <main className="min-h-screen">{children}</main>
+            <ScrollToTopButton />
             <Toaster richColors />
 
             <footer className="bg-muted/50 py-16 border-t border-gray-700">
@@ -42,22 +46,6 @@ export default function RootLayout({ children }) {
                   Transforming careers through innovative AI solutions and
                   cutting-edge technology
                 </p>
-
-                {/* Links
-                <div className="flex flex-wrap justify-center gap-6 mb-8">
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
-                    About Us
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
-                    Services
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
-                    Careers
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
-                    Contact
-                  </a>
-                </div> */}
 
                 {/* Copyright */}
                 <p className="text-gray-500 text-xs tracking-widest">

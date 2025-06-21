@@ -11,6 +11,7 @@ const HeroSection = () => {
   const [displayText, setDisplayText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const { user, signIn } = useUser();
   const fullText = "IDEAGENIE";
 
@@ -47,6 +48,13 @@ const HeroSection = () => {
     }
   }, [currentIndex, fullText]);
 
+  const handleButtonClick = () => {
+    setIsClicked(true);
+    if (!user) {
+      signIn();
+    }
+  };
+
   return (
     <section className="w-full pt-36 md:pt-48 pb-10">
       <div className="space-y-6 text-center">
@@ -54,8 +62,7 @@ const HeroSection = () => {
           <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl xl:text-7xl gradient-title animate-gradient">
             {displayText}
             <span className="typing-cursor">|</span>
-          </h1>
-          <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
+          </h1>          <p className="mx-auto max-w-[600px] text-gray-3 dark:text-gray-2 md:text-xl">
             Ignite innovation with smart team collaboration and AI-powered
             project ideas
           </p>
@@ -63,7 +70,11 @@ const HeroSection = () => {
         <div className="flex justify-center space-x-4">
           {user ? (
             <Link href="/form">
-              <Button size="lg" className="px-8">
+              <Button 
+                size="lg" 
+                className="px-8 bg-primary hover:bg-primary-dark text-light transition-all duration-200 shadow-lg hover:shadow-primary/40"
+                onClick={() => setIsClicked(true)}
+              >
                 Get Started
               </Button>
             </Link>
@@ -75,7 +86,11 @@ const HeroSection = () => {
                   : "translate-y-2 opacity-0"
               }`}
             >
-              <Button size="lg" className="px-8" onClick={signIn}>
+              <Button 
+                size="lg" 
+                className={`px-8 ${isClicked ? 'bg-primary-dark text-light' : 'bg-primary text-light'} hover:bg-primary-dark transition-all duration-200 shadow-lg hover:shadow-primary/40`}
+                onClick={handleButtonClick}
+              >
                 Get Started
               </Button>
             </div>
