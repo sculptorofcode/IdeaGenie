@@ -29,6 +29,27 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const observerRef = useRef(null);
+  
+  const startCounting = useCallback(() => {
+    const startTime = Date.now();
+    const endTime = startTime + duration;
+
+    const updateCount = () => {
+      const now = Date.now();
+      const progress = Math.min(1, (now - startTime) / duration);
+      const currentCount = Math.floor(progress * target);
+
+      setCount(currentCount);
+
+      if (now < endTime) {
+        requestAnimationFrame(updateCount);
+      } else {
+        setCount(target);
+      }
+    };
+
+    requestAnimationFrame(updateCount);
+  }, [duration, target]);
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
@@ -50,26 +71,6 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
         observerRef.current.unobserve(currentRef);      }
     };
   }, [startCounting]);
-  const startCounting = useCallback(() => {
-    const startTime = Date.now();
-    const endTime = startTime + duration;
-
-    const updateCount = () => {
-      const now = Date.now();
-      const progress = Math.min(1, (now - startTime) / duration);
-      const currentCount = Math.floor(progress * target);
-
-      setCount(currentCount);
-
-      if (now < endTime) {
-        requestAnimationFrame(updateCount);
-      } else {
-        setCount(target);
-      }
-    };
-
-    requestAnimationFrame(updateCount);
-  }, [duration, target]);
 
   return <span ref={ref}>{count}+</span>;
 };
