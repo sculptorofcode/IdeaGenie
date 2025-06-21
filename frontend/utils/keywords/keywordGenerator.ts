@@ -91,27 +91,54 @@ export async function fetchKeywordData(
     throw new Error('Keyword parameter is required');
   }
 
-  const apiKey = process.env.KEYWORD_SEARCH_API;
-  if (!apiKey) {
-    throw new Error('Missing KEYWORD_SEARCH_API in environment variables');
-  }
-
-  const apiUrl = 'https://keywordresearch.api.kwrds.ai/keywords-with-volumes';
-  const data = {
-    search_question: keyword,
-    search_country: country,
-    limit,
-  };
-
+  // Use our Next.js API route as a proxy to avoid exposing API keys in client-side code
   try {
-    const response = await axios.post(apiUrl, data, {
-      headers: {
-        'X-API-KEY': apiKey,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    return transformKeywordData(response.data, keyword, country);
+    // Determine if we're running in a browser (client-side) context
+    const isClient = typeof window !== 'undefined';
+    
+    if (isClient) {
+      // Client-side: Use the API route
+      const response = await fetch('/api/keywords/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          keyword,
+          country,
+          limit,
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch keyword data');
+      }
+      
+      return await response.json();
+    } else {
+      // Server-side: Direct API call with environment variables
+      const apiKey = process.env.KEYWORD_SEARCH_API;
+      if (!apiKey) {
+        throw new Error('Missing KEYWORD_SEARCH_API in environment variables');
+      }
+      
+      const apiUrl = 'https://keywordresearch.api.kwrds.ai/keywords-with-volumes';
+      const data = {
+        search_question: keyword,
+        search_country: country,
+        limit,
+      };
+      
+      const response = await axios.post(apiUrl, data, {
+        headers: {
+          'X-API-KEY': apiKey,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      return transformKeywordData(response.data, keyword, country);
+    }
   } catch (error: any) {
     console.error('API request failed:', error);
     
@@ -119,7 +146,7 @@ export async function fetchKeywordData(
       throw new Error(`Keyword API error: ${JSON.stringify(error.response.data)}`);
     }
     
-    throw new Error('Failed to fetch keyword suggestions');
+    throw new Error(`Failed to fetch keyword suggestions: ${error.message}`);
   }
 }
 

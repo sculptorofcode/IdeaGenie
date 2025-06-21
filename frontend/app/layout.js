@@ -6,6 +6,7 @@ import Header from "../components/header";
 import { ThemeProvider } from "../components/theme-provider";
 import ScrollToTopButton from '../components/scroll-to-top';
 import SmoothScrollInit from '../components/smooth-scroll-init';
+import UserSync from '../components/UserSync';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -64,8 +65,8 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" href="/logo4.svg" sizes="any" />
       </head>
-      <body className={`${inter.className}`}>
-        <CivicAuthProvider>
+      <body className={`${inter.className}`}>        <CivicAuthProvider>
+          <UserSync />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
