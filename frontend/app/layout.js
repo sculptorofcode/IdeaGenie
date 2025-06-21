@@ -43,22 +43,6 @@ export default function RootLayout({ children }) {
                   cutting-edge technology
                 </p>
 
-                {/* Links
-                <div className="flex flex-wrap justify-center gap-6 mb-8">
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
-                    About Us
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
-                    Services
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
-                    Careers
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider">
-                    Contact
-                  </a>
-                </div> */}
-
                 {/* Copyright */}
                 <p className="text-gray-500 text-xs tracking-widest">
                   © {new Date().getFullYear()} 405 Found AT HACK4BENGAL. ALL
