@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
+import sendPrompt from '@/utils/gemini/connect_gemini';
 
 interface KeywordData {
   keyword: string;
@@ -18,20 +19,9 @@ interface TransformedKeywordData {
   keywords: KeywordData[];
 }
 
-// Define the structure of the API response
-interface KeywordAPIResponse {
-  keyword?: Record<string, string>;
-  volume?: Record<string, number>;
-  cpc?: Record<string, number>;
-  avg_monthly_searches?: Record<string, number[]>;
-  searchIntent?: Record<string, string>;
-  competition_value?: Record<string, string>;
-  Source?: Record<string, string>;
-}
-
 // Function to transform the API response into organized structure
 function transformKeywordData(
-  apiResponse: KeywordAPIResponse,
+  apiResponse: any,
   searchQuestion: string,
   searchCountry: string
 ): TransformedKeywordData {
@@ -81,6 +71,53 @@ function transformKeywordData(
   };
 }
 
+// export async function POST(req: NextRequest): Promise<NextResponse> {
+//   try {
+//     const body = await req.json();
+//     const search_question: string = body.search_question;
+//     const search_country: string = body.search_country;
+
+//     if (!search_question) {
+//       return NextResponse.json({ error: 'search_question is required' }, { status: 400 });
+//     }
+
+//     const apiKey = process.env.KEYWORD_SEARCH_API;
+//     if (!apiKey) {
+//       console.error('Missing KEYWORD_SEARCH_API in environment variables');
+//       return NextResponse.json({ error: 'Missing API key' }, { status: 500 });
+//     }
+
+//     const url = 'https://keywordresearch.api.kwrds.ai/keywords-with-volumes';
+//     const data = {
+//       search_question: search_question,
+//       search_country: search_country || 'en-US',
+//     };
+
+//     const response = await axios.post(url, data, {
+//       headers: {
+//         'X-API-KEY': apiKey,
+//         'Content-Type': 'application/json',
+//       },
+//     });
+
+//     // Transform the response data into organized structure
+//     const organizedData = transformKeywordData(response.data, search_question, search_country || 'en-US');
+//     return NextResponse.json(organizedData, { status: 200 });
+//   } catch (error: any) {
+//     console.error('Error fetching keyword suggestions:', error);
+//     if (error.response) {
+//       return NextResponse.json(
+//         {
+//           error: 'Keyword API error',
+//           details: error.response.data,
+//         },
+//         { status: error.response.status }
+//       );
+//     }
+//     return NextResponse.json({ error: 'Failed to fetch keyword suggestions' }, { status: 500 });
+//   }
+// }
+
 // Handles GET requests for keyword suggestions
 export async function handleKeywordGetRequest(keyword: string, country = 'en-US'): Promise<NextResponse> {
     try {
@@ -112,9 +149,9 @@ export async function handleKeywordGetRequest(keyword: string, country = 'en-US'
                     'Content-Type': 'application/json',
                 },
             });
-        } catch (apiError: unknown) {
+        } catch (apiError: any) {
             console.error('API request failed:', apiError);
-            if (axios.isAxiosError(apiError) && apiError.response) {
+            if (apiError.response) {
                 return NextResponse.json(
                     {
                         error: 'Keyword API error',
@@ -126,12 +163,11 @@ export async function handleKeywordGetRequest(keyword: string, country = 'en-US'
             return NextResponse.json({ error: 'Failed to fetch keyword suggestions' }, { status: 500 });
         }
 
-        const organizedData = transformKeywordData(response.data as KeywordAPIResponse, search_question, search_country);
+        const organizedData = transformKeywordData(response.data, search_question, search_country);
         return NextResponse.json(organizedData, { status: 200 });
-    } catch (error: unknown) {
+    } catch (error: any) {
         console.error('Unexpected error:', error);
-        const errorMessage = error instanceof Error ? error.message : 'Internal server error';
-        return NextResponse.json({ error: errorMessage }, { status: 500 });
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
 
