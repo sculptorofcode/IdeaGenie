@@ -11,10 +11,9 @@ export default function StatsSection() {
       data-scroll
     >
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+        <motion.div          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: false, margin: "-100px" }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
@@ -24,10 +23,9 @@ export default function StatsSection() {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+          <motion.div            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.4, delay: 0.1 }}
             className="flex flex-col items-center justify-center space-y-2"
           >
@@ -36,10 +34,9 @@ export default function StatsSection() {
             </h3>
             <p className="text-muted-foreground">Domains Covered</p>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+          <motion.div            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.4, delay: 0.2 }}
             className="flex flex-col items-center justify-center space-y-2"
           >
@@ -50,8 +47,7 @@ export default function StatsSection() {
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            whileInView={{ opacity: 1, y: 0 }}            viewport={{ once: false }}
             transition={{ duration: 0.4, delay: 0.3 }}
             className="flex flex-col items-center justify-center space-y-2"
           >
@@ -60,10 +56,9 @@ export default function StatsSection() {
             </h3>
             <p className="text-muted-foreground">Team Matches Suggested</p>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+          <motion.div            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.4, delay: 0.4 }}
             className="flex flex-col items-center justify-center space-y-2"
           >
