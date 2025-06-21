@@ -1,0 +1,217 @@
+/* Enhanced responsive styles for IdeaGenie app */
+
+/* Additional responsive classes */
+.radio-group-responsive {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.radio-text {
+  display: inline-block;
+}
+
+.navigation-responsive {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.roadmap-actions-responsive {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.team-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.member-input {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 992px) {
+  .container {
+    max-width: 95%;
+    padding: 1.5rem;
+  }
+  
+  .step-container {
+    padding: 2rem;
+  }
+  
+  .step-progress {
+    margin-bottom: 2rem;
+  }
+  
+  .step-label {
+    font-size: 0.8rem;
+  }
+  
+  .radio-group {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .roadmap-actions-responsive {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .roadmap-output {
+    overflow-x: hidden;
+  }
+}
+
+/* Small screens (mobile phones) */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    margin: 0 auto;
+  }
+  
+  .step-container {
+    padding: 1.5rem;
+    border-radius: calc(var(--card-radius) / 2);
+  }
+  
+  header {
+    margin-bottom: 2rem;
+  }
+
+  .logo-text {
+    font-size: 1.3rem;
+  }
+  
+  .step-progress {
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .step {
+    min-width: 80px;
+  }
+  
+  .step-number {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .step-title {
+    font-size: 1.5rem;
+  }
+  
+  .radio-group {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .form-control {
+    padding: 0.8rem;
+  }
+  
+  .navigation {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .navigation .btn {
+    width: 100%;
+    margin: 0.25rem 0;
+  }
+  
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .team-members {
+    grid-template-columns: 1fr;
+  }
+  
+  .roadmap-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .roadmap-title {
+    font-size: 1.5rem;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .step-container {
+    padding: 1rem;
+    border-radius: calc(var(--card-radius) / 3);
+  }
+  
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-outline {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .step-number {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+  
+  .step-label {
+    font-size: 0.75rem;
+  }
+  
+  .step-title {
+    font-size: 1.3rem;
+  }
+  
+  .roadmap-section-title {
+    font-size: 1.2rem;
+  }
+  
+  .roadmap-list li {
+    padding-left: 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .roadmap-list li::before {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .roadmap-note {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .roadmap-actions .btn {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
