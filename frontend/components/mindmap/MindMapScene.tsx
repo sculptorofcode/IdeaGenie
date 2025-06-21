@@ -6,9 +6,16 @@ import ControlPanel from './controls/ControlPanel';
 import SimulationStatus from './controls/SimulationStatus';
 import { MindMapNode, ViewportState, Position, Connection, ApiSimulationStep, StatusNode, ProblemNode, ProductNode } from '../../types/mindmap';
 import { useToast } from '../../hooks/use-toast';
+import { usePipelineContext } from '../PipelineContext';
 
-const MindMapScene: React.FC = () => {
+interface MindMapSceneProps {
+  usePipelineData?: boolean;
+}
+
+const MindMapScene: React.FC<MindMapSceneProps> = ({ usePipelineData = false }) => {
   const { toast } = useToast();
+  const { pipelineData, loading: pipelineLoading, error: pipelineError } = usePipelineContext();
+  
   const [viewport, setViewport] = useState<ViewportState>({
     x: 100,
     y: 100,
@@ -35,6 +42,125 @@ const MindMapScene: React.FC = () => {
     { id: 'step-3', message: 'Performing backend analysis...', duration: 2500 },
     { id: 'step-4', message: 'Generating response with Gemini...', duration: 4000 },
   ];
+
+  // Function to create nodes from pipeline data
+  const createNodesFromPipelineData = useCallback(() => {
+    if (!pipelineData) return;
+
+    const { exploration, insight } = pipelineData;
+    
+    // Create root node from main keyword
+    const rootNode: MindMapNode = {
+      id: 'root-1',
+      type: 'root',
+      position: { x: 400, y: 200 },
+      title: 'IdeaGenie Root',
+      inputValue: exploration.mainKeyword || 'Your Project',
+    };
+    
+    const newNodes: MindMapNode[] = [rootNode];
+    const newConnections: Connection[] = [];
+    
+    // Create problem nodes from insight data
+    const problemNodes: ProblemNode[] = (insight.problems || []).map((problem: string, index: number) => {
+      // Try to parse out parts from the problem text
+      const titleMatch = problem.match(/Problem:\s*([^,\n]+)/i);
+      const contextMatch = problem.match(/Context:\s*([^,\n]+)/i);
+      const painPointMatch = problem.match(/Pain point:\s*([^,\n]+)/i);
+      const emotionsMatch = problem.match(/Emotions:\s*\[([^\]]+)\]/i) || 
+                            problem.match(/Emotions:\s*([^,\n]+)/i);
+      
+      const title = titleMatch ? titleMatch[1].trim() : `Problem ${index + 1}`;
+      const context = contextMatch ? contextMatch[1].trim() : '';
+      const painPoint = painPointMatch ? painPointMatch[1].trim() : '';
+      const emotionsStr = emotionsMatch ? emotionsMatch[1].trim() : '';
+      const emotions = emotionsStr.split(/,\s*/).filter(e => e);
+      
+      const node: ProblemNode = {
+        id: `problem-${Date.now()}-${index}`,
+        type: 'problem',
+        position: { 
+          x: rootNode.position.x + (index - 1) * 400, 
+          y: rootNode.position.y + 300 
+        },
+        title,
+        context,
+        url: '',
+        painPoint,
+        emotions,
+        parentId: rootNode.id,
+      };
+      
+      // Create connection from root to problem
+      newConnections.push({
+        id: `conn-${rootNode.id}-${node.id}`,
+        fromNodeId: rootNode.id,
+        toNodeId: node.id,
+      });
+      
+      return node;
+    });
+    
+    newNodes.push(...problemNodes);
+    
+    // Create product nodes from insight data
+    const productNodes: ProductNode[] = (insight.productIdeas || []).map((product: string, index: number) => {
+      // Try to parse out parts from the product text
+      const titleMatch = product.match(/Product:\s*([^,\n]+)/i);
+      const descriptionMatch = product.match(/Description:\s*([^,\n]+)/i);
+      const featuresMatch = product.match(/Features:\s*\[([^\]]+)\]/i) ||
+                           product.match(/Features:\s*([^,\n]+)/i);
+      
+      const title = titleMatch ? titleMatch[1].trim() : `Product Idea ${index + 1}`;
+      const description = descriptionMatch ? descriptionMatch[1].trim() : '';
+      const featuresStr = featuresMatch ? featuresMatch[1].trim() : '';
+      const features = featuresStr.split(/,\s*/).filter(f => f);
+      
+      // Choose a problem node to connect this product to
+      const problemNodeIndex = Math.min(index, problemNodes.length - 1);
+      const problemNode = problemNodes[problemNodeIndex];
+      
+      const node: ProductNode = {
+        id: `product-${Date.now()}-${index}`,
+        type: 'product',
+        position: {
+          x: problemNode.position.x + 100,
+          y: problemNode.position.y + 200,
+        },
+        title,
+        description,
+        features,
+        parentId: problemNode.id,
+      };
+      
+      // Create connection from problem to product
+      newConnections.push({
+        id: `conn-${problemNode.id}-${node.id}`,
+        fromNodeId: problemNode.id,
+        toNodeId: node.id,
+      });
+      
+      return node;
+    });
+    
+    newNodes.push(...productNodes);
+    
+    // Update state with new nodes and connections
+    setNodes(newNodes);
+    setConnections(newConnections);
+    
+    toast({
+      title: "Mindmap Generated",
+      description: `Created from '${exploration.mainKeyword}' with ${problemNodes.length} problems and ${productNodes.length} product ideas.`,
+    });
+  }, [pipelineData, toast]);
+  
+  // Effect to populate from pipeline data when available
+  useEffect(() => {
+    if (usePipelineData && pipelineData && !pipelineLoading) {
+      createNodesFromPipelineData();
+    }
+  }, [usePipelineData, pipelineData, pipelineLoading, createNodesFromPipelineData]);
 
   const handleViewportChange = useCallback((newViewport: ViewportState) => {
     setViewport(newViewport);
