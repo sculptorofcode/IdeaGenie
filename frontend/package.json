@@ -1,7 +1,8 @@
 {
   "name": "ai-career-coach",
   "version": "0.1.0",
-  "private": true,  "scripts": {
+  "private": true,
+  "scripts": {
     "dev": "next dev --turbopack",
     "dev:no-turbo": "next dev",
     "build": "next build",
@@ -12,6 +13,9 @@
   "dependencies": {
     "@clerk/nextjs": "^6.9.10",
     "@clerk/themes": "^2.2.26",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@google/generative-ai": "^0.21.0",
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.5.0",
