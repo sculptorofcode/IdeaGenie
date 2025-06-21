@@ -4,6 +4,8 @@ import { CivicAuthProvider } from "@civic/auth/nextjs";
 import { Toaster } from "sonner";
 import Header from "../components/header";
 import { ThemeProvider } from "../components/theme-provider";
+import ScrollToTopButton from '../components/scroll-to-top';
+import SmoothScrollInit from '../components/smooth-scroll-init';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +28,10 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
+            <SmoothScrollInit />
             <Header />
             <main className="min-h-screen">{children}</main>
+            <ScrollToTopButton />
             <Toaster richColors />
 
             <footer className="bg-muted/50 py-16 border-t border-gray-700">

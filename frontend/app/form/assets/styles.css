@@ -1,12 +1,25 @@
-/* Copied from original project styles */
+/* Updated color palette to match main theme */
 :root {
-    --primary: #6E49FE;
-    --primary-dark: #5a3ad8;
-    --secondary: #6E49FE;
-    --accent: #6E49FE;
-    --dark: #000000;
-    --light: #FFFFFF;
-    --background: #1E1E22;
+    --primary: #6366F1;
+    --primary-light: #A5B4FC;
+    --primary-dark: #4F46E5;
+    --secondary: #10B981;
+    --secondary-light: #6EE7B7;
+    --secondary-dark: #059669;
+    --accent: #F59E0B;
+    --accent-light: #FCD34D;
+    --accent-dark: #D97706;
+    --success: #22C55E;
+    --warning: #F97316;
+    --error: #EF4444;
+    --dark: #111827;
+    --dark-2: #1F2937;
+    --light: #F9FAFB;
+    --light-2: #F3F4F6;
+    --gray-1: #E5E7EB;
+    --gray-2: #9CA3AF;
+    --gray-3: #6B7280;
+    --background: var(--dark-2);
     --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
     --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
     --card-radius: 20px;
@@ -67,7 +80,7 @@ header {
 }
 
 .step-container {
-    background: rgba(30, 30, 34, 0.8);
+    background: var(--dark-2);
     border-radius: var(--card-radius);
     box-shadow: var(--shadow);
     padding: 2.5rem;
@@ -84,7 +97,7 @@ header {
     left: 0;
     width: 5px;
     height: 100%;
-    background: var(--primary);
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
 }
 
 .step-progress {
@@ -135,7 +148,7 @@ header {
 }
 
 .step.completed .step-number {
-    background-color: var(--primary);
+    background-color: var(--secondary);
     color: white;
 }
 
@@ -152,7 +165,7 @@ header {
 }
 
 .step.completed .step-label {
-    color: var(--primary);
+    color: var(--secondary);
 }
 
 .step-content {
@@ -208,7 +221,7 @@ header {
 .form-control:focus {
     border-color: var(--primary);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(110, 73, 254, 0.2);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
     background-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -283,7 +296,7 @@ select.form-control option {
 }
 
 .team-card {
-    background-color: rgba(30, 30, 34, 0.8);
+    background-color: var(--dark-2);
     border-radius: 15px;
     padding: 1.5rem;
     box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.2);
@@ -294,7 +307,7 @@ select.form-control option {
 .team-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-    border-color: rgba(110, 73, 254, 0.3);
+    border-color: rgba(99, 102, 241, 0.3);
 }
 
 .team-card h3 {
@@ -307,7 +320,7 @@ select.form-control option {
 }
 
 .team-card h3 i {
-    color: var(--primary);
+    color: var(--accent);
 }
 
 .btn {
@@ -336,6 +349,18 @@ select.form-control option {
     background: var(--primary-dark);
 }
 
+.btn-secondary {
+    background: var(--secondary);
+    color: white;
+    box-shadow: 0 5px 15px -5px var(--secondary);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px var(--secondary);
+    background: var(--secondary-dark);
+}
+
 .btn-outline {
     background: transparent;
     color: var(--primary);
@@ -343,19 +368,19 @@ select.form-control option {
 }
 
 .btn-outline:hover {
-    background-color: rgba(110, 73, 254, 0.1);
+    background-color: rgba(99, 102, 241, 0.1);
 }
 
 .btn-accent {
-    background-color: var(--primary);
+    background-color: var(--accent);
     color: white;
-    box-shadow: 0 5px 15px -5px var(--primary);
+    box-shadow: 0 5px 15px -5px var(--accent);
 }
 
 .btn-accent:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px -5px var(--primary);
-    background-color: var(--primary-dark);
+    box-shadow: 0 10px 20px -5px var(--accent);
+    background-color: var(--accent-dark);
 }
 
 .navigation {
