@@ -51,7 +51,7 @@ export default function Header() {
             <>
               {/* Dashboard Button */}
               <div className={`transition-all duration-300 delay-100 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}>
-                <Link href="/dashboard">
+                <Link href="/form">
                   <Button
                     variant="ghost"
                     className="hidden md:flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-all border border-white/10 hover:border-white/20"
@@ -62,7 +62,7 @@ export default function Header() {
                   <Button 
                     variant="ghost" 
                     className="md:hidden w-10 h-10 p-0 text-white/90 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20"
-                    aria-label="Dashboard"
+                    aria-label=""
                   >
                     <LayoutDashboard className="h-4 w-4" />
                   </Button>
@@ -87,7 +87,7 @@ export default function Header() {
                   >
                     <DropdownMenuItem asChild className="p-0 hover:bg-white/10">
                       <Link 
-                        href="/resume" 
+                        href="/form" 
                         className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-white/90 hover:text-white transition-colors"
                       >
                         <FileText className="h-4 w-4 text-purple-400" />
@@ -96,7 +96,7 @@ export default function Header() {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="p-0 hover:bg-white/10">
                       <Link
-                        href="/ai-cover-letter"
+                        href="/form"
                         className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-white/90 hover:text-white transition-colors"
                       >
                         <PenBox className="h-4 w-4 text-blue-400" />
@@ -105,7 +105,7 @@ export default function Header() {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="p-0 hover:bg-white/10">
                       <Link 
-                        href="/interview" 
+                        href="/form" 
                         className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-white/90 hover:text-white transition-colors"
                       >
                         <GraduationCap className="h-4 w-4 text-indigo-400" />
