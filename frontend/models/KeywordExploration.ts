@@ -12,7 +12,7 @@ export interface ISubKeyword {
   volume: number;
   cpc: number;
   intent: string;
-  competition: string;
+  competition: string | number; // Accept both string and number values
   trend: ITrend[];
 }
 
@@ -39,7 +39,7 @@ const SubKeywordSchema: Schema<ISubKeyword> = new mongoose.Schema({
   volume: { type: Number, required: true },
   cpc: { type: Number, required: true },
   intent: { type: String, required: true },
-  competition: { type: String, required: true },
+  competition: { type: mongoose.Schema.Types.Mixed, required: true }, // Allow both string and number
   trend: [TrendSchema],
 }, { _id: false });
 

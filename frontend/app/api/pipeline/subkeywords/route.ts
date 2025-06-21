@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import KeywordExploration from '../../../../models/KeywordExploration';
+// Import and handle the model type properly
+import KeywordExplorationModel, { IKeywordExploration } from '../../../../models/KeywordExploration';
+
+// Ensure we have the correct Mongoose model type
+const KeywordExploration = KeywordExplorationModel as mongoose.Model<IKeywordExploration>;
 
 // Connect to MongoDB
 async function connectToDatabase() {
@@ -27,12 +31,30 @@ export async function POST(req: Request) {
     }
     
     await connectToDatabase();
+      // Validate and normalize the subkeywords data
+    const validatedSubkeywords = subkeywords.map(kw => ({
+      keyword: String(kw.keyword || ''),
+      volume: Number(kw.volume || 0),
+      cpc: Number(kw.cpc || 0),
+      intent: String(kw.intent || 'Unknown'),
+      competition: String(kw.competition || 'UNKNOWN'),
+      trend: Array.isArray(kw.trend) ? kw.trend.map(t => ({
+        month: String(t.month || ''),
+        year: Number(t.year || new Date().getFullYear()),
+        searches: Number(t.searches || 0)
+      })) : []
+    }));    // Find the exploration document
+    const exploration = await KeywordExploration.findById(explorationId);
     
-    // Update exploration with subkeywords
-    await KeywordExploration.findByIdAndUpdate(
-      explorationId,
-      { subkeywords }
-    );
+    if (!exploration) {
+      return NextResponse.json({ message: 'Exploration not found' }, { status: 404 });
+    }
+    
+    // Update the subkeywords array
+    exploration.subkeywords = validatedSubkeywords;
+    
+    // Save the updated document
+    await exploration.save();
     
     return NextResponse.json({ 
       message: 'Subkeywords added successfully'

@@ -180,14 +180,12 @@ async function generateSubkeywords(mainKeyword: string, country: string): Promis
     
     if (!keywordData.keywords || keywordData.keywords.length === 0) {
       throw new Error("No keywords returned from service");
-    }
-    
-    return keywordData.keywords.map(kw => ({
-      keyword: kw.keyword,
-      volume: kw.volume,
-      cpc: kw.cpc,
-      intent: kw.search_intent,
-      competition: kw.competition_value,
+    }    return keywordData.keywords.map(kw => ({
+      keyword: String(kw.keyword || ''),
+      volume: Number(kw.volume || 0),
+      cpc: Number(kw.cpc || 0),
+      intent: String(kw.search_intent || 'Unknown'),
+      competition: String(kw.competition_value || 'UNKNOWN'),
       trend: kw.avg_monthly_searches ? 
         kw.avg_monthly_searches.map((searches: number, index: number) => {
           const date = new Date();
@@ -196,7 +194,7 @@ async function generateSubkeywords(mainKeyword: string, country: string): Promis
           return {
             month: date.toLocaleString('default', { month: 'short' }),
             year: date.getFullYear(),
-            searches
+            searches: Number(searches) // Ensure searches is a number
           };
         }) : []
     }));
