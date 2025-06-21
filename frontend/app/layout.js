@@ -8,7 +8,7 @@ import { ThemeProvider } from "../components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "AI Career Coach",
+  title: "IDEAGENIE",
   description: "",
 };
 
@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logo.png" sizes="any" />
+        <link rel="icon" href="/logo4.svg" sizes="any" />
       </head>
       <body className={`${inter.className}`}>
         <CivicAuthProvider>
@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
               <div className="container mx-auto px-4 text-center">
                 {/* Massive DevXtreme text */}
                 <p className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gray-300 opacity-90 mb-4 tracking-tight">
-                  DEVXTREME
+                  405 FOUND
                 </p>
 
                 {/* Supporting text */}
@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
 
                 {/* Copyright */}
                 <p className="text-gray-500 text-xs tracking-widest">
-                  © {new Date().getFullYear()} TEAM DEVXTREME AT KGEC. ALL
+                  © {new Date().getFullYear()} 405 Found AT HACK4BENGAL. ALL
                   RIGHTS RESERVED.
                 </p>
               </div>{" "}

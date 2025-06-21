@@ -35,8 +35,8 @@ export default function Header() {
         <div className={`transition-opacity duration-300 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
           <Link href="/">
             <Image
-              src={"/logo4.png"}
-              alt="DevXtremeLogo"
+              src={"/logo4.svg"}
+              alt="Logo"
               width={260}
               height={80}
               className="h-12 py-1 w-auto object-contain hover:opacity-90 transition-opacity filter drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
