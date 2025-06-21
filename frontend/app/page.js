@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -39,20 +39,18 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
         }
       },
       { threshold: 0.5 }
-    );
-
-    if (ref.current) {
+    );    if (ref.current) {
       observerRef.current.observe(ref.current);
     }
 
-    return () => {
-      if (observerRef.current && ref.current) {
-        observerRef.current.unobserve(ref.current);
-      }
-    };
-  }, []);
+    const currentRef = ref.current; // Store the ref value in a variable
 
-  const startCounting = () => {
+    return () => {
+      if (observerRef.current && currentRef) {
+        observerRef.current.unobserve(currentRef);      }
+    };
+  }, [startCounting]);
+  const startCounting = useCallback(() => {
     const startTime = Date.now();
     const endTime = startTime + duration;
 
@@ -71,7 +69,7 @@ const AnimatedCounter = ({ target, duration = 2000 }) => {
     };
 
     requestAnimationFrame(updateCount);
-  };
+  }, [duration, target]);
 
   return <span ref={ref}>{count}+</span>;
 };
