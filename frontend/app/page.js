@@ -130,19 +130,19 @@ export default function LandingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
             <div className="flex flex-col items-center justify-center space-y-2">
               <h3 className="text-4xl font-bold">
-                <AnimatedCounter target={50} />
+              <AnimatedCounter target={50} duration={9000} />
               </h3>
               <p className="text-muted-foreground">Domains Covered</p>
             </div>
             <div className="flex flex-col items-center justify-center space-y-2">
               <h3 className="text-4xl font-bold">
-                <AnimatedCounter target={1000} duration={10} />
+                <AnimatedCounter target={1000} duration={9000} />
               </h3>
               <p className="text-muted-foreground">Unique Ideas Generated</p>
             </div>
             <div className="flex flex-col items-center justify-center space-y-2">
               <h3 className="text-4xl font-bold">
-                <AnimatedCounter target={95} duration={1500} />
+                <AnimatedCounter target={95} duration={9000} />
               </h3>
               <p className="text-muted-foreground">Team Matches Suggested</p>
             </div>
