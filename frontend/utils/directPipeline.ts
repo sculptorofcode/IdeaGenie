@@ -42,7 +42,16 @@ interface Subkeyword {
  * This is now a client-safe version that uses API routes instead of direct DB access
  */
 export async function runKeywordPipelineDirect({ userId, mainKeyword, country = 'en-US' }: KeywordPipelineOptions) {
-  try {    // Validate that we have a valid userId - must be a valid MongoDB ObjectId format
+  try {
+    // Check if Gemini API is properly configured before starting the pipeline
+    const geminiCheckResponse = await fetch('/api/check-gemini-api');
+    const geminiCheckResult = await geminiCheckResponse.json();
+    
+    if (!geminiCheckResponse.ok || geminiCheckResult.status === 'error') {
+      throw new Error(geminiCheckResult.message || 'Gemini API configuration error');
+    }
+    
+    // Validate that we have a valid userId - must be a valid MongoDB ObjectId format
     if (!userId || userId.startsWith('user-') || !/^[0-9a-fA-F]{24}$/.test(userId)) {
       throw new Error('Valid authenticated user ID is required. Please sign in first.');
     }

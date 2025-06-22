@@ -4,15 +4,16 @@ import { CivicAuthProvider } from "@civic/auth/nextjs";
 import { Toaster } from "sonner";
 import Header from "../components/header";
 import { ThemeProvider } from "../components/theme-provider";
-import ScrollToTopButton from '../components/scroll-to-top';
-import SmoothScrollInit from '../components/smooth-scroll-init';
-import UserSync from '../components/UserSync';
+import ScrollToTopButton from "../components/scroll-to-top";
+import SmoothScrollInit from "../components/smooth-scroll-init";
+import UserSync from "../components/UserSync";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "IdeaGenie",
-  description: "IdeaGenie - Transforming careers through innovative AI solutions and cutting-edge technology.",
+  description:
+    "IdeaGenie - Transforming careers through innovative AI solutions and cutting-edge technology.",
   keywords: [
     "IdeaGenie",
     "AI",
@@ -23,21 +24,20 @@ export const metadata = {
     "Ideation",
     "Productivity",
     "Next.js",
-    "CivicAuth"
+    "CivicAuth",
   ],
-  authors: [
-    { name: "405 Found", url: "https://saikatroy.vercel.app" }
-  ],
+  authors: [{ name: "405 Found", url: "https://saikatroy.vercel.app" }],
   creator: "405 Found",
   publisher: "405 Found",
   applicationName: "IdeaGenie",
   icons: {
-    icon: "/Logos.svg"
+    icon: "/Logos.svg",
   },
   themeColor: "#18181b",
   openGraph: {
     title: "IdeaGenie",
-    description: "Transforming careers through innovative AI solutions and cutting-edge technology.",
+    description:
+      "Transforming careers through innovative AI solutions and cutting-edge technology.",
     url: "https://your-ideagenie-domain.com",
     siteName: "IdeaGenie",
     images: [
@@ -45,18 +45,19 @@ export const metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "IdeaGenie Open Graph Image"
-      }
+        alt: "IdeaGenie Open Graph Image",
+      },
     ],
     locale: "en_US",
-    type: "website"
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "IdeaGenie",
-    description: "Transforming careers through innovative AI solutions and cutting-edge technology.",
-    images: ["/og-image.png"]
-  }
+    description:
+      "Transforming careers through innovative AI solutions and cutting-edge technology.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -65,7 +66,9 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" href="/logo4.svg" sizes="any" />
       </head>
-      <body className={`${inter.className}`}>        <CivicAuthProvider>
+      <body className={`${inter.className}`}>
+        {" "}
+        <CivicAuthProvider>
           <UserSync />
           <ThemeProvider
             attribute="class"
@@ -76,6 +79,14 @@ export default function RootLayout({ children }) {
             <SmoothScrollInit />
             <Header />
             <main className="min-h-screen">{children}</main>
+            {/* Import the Footer component */}
+            <div className="mt-auto">
+              {/* @ts-expect-error Server Component */}
+              {(() => {
+                const Footer = require("../components/footer").default;
+                return <Footer />;
+              })()}
+            </div>
             <ScrollToTopButton />
             <Toaster richColors />
 

@@ -63,7 +63,7 @@ export async function POST(req: Request) {
       problems,
       productIdeas,
       sentiment,
-      status: 'completed',
+      status: 'complete',
       createdAt: new Date()
     });
     await insight.save();
