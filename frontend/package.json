@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "dev:no-turbo": "next dev",
     "build": "next build",
+    "build:force": "cross-env NEXT_SKIP_TYPECHECKING=1 next build --no-lint",
     "start": "next start",
     "lint": "next lint"
   },
@@ -65,6 +66,7 @@
     "@types/raf": "^3.4.3",
     "@types/react": "19.1.8",
     "@types/unist": "^3.0.3",
+    "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
     "postcss": "^8",

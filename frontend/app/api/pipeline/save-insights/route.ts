@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     const sentiment = sentimentMatch ? sentimentMatch[0].replace(/SENTIMENT:\s*/i, '').trim() : '';
     
     // Save to database
-    const insight = await LLMInsight.create({
+    const insight = new LLMInsight({
       explorationId,
       rawResponse: geminiResponse,
       problems,
@@ -66,6 +66,7 @@ export async function POST(req: Request) {
       status: 'completed',
       createdAt: new Date()
     });
+    await insight.save();
     
     return NextResponse.json({
       message: 'LLM insights saved successfully',

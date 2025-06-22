@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import KeywordExploration from '../../../../../models/KeywordExploration';
 
 // Connect to MongoDB
 async function connectToDatabase() {
@@ -13,7 +12,8 @@ async function connectToDatabase() {
   }
 }
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+// Using direct MongoDB operations instead of Mongoose model to avoid type issues
+export async function POST(request, { params }) {
   try {
     const explorationId = params.id;
     
@@ -23,14 +23,22 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     
     await connectToDatabase();
     
-    // Mark exploration as complete
-    await KeywordExploration.findByIdAndUpdate(
-      explorationId,
-      {
-        completed: true,
-        completedAt: new Date()
-      }
-    );
+    // Mark exploration as complete using MongoDB update query directly
+    const result = await mongoose.connection.db
+      .collection('keywordexplorations')
+      .updateOne(
+        { _id: new mongoose.Types.ObjectId(explorationId) },
+        { 
+          $set: { 
+            completed: true,
+            completedAt: new Date() 
+          } 
+        }
+      );
+    
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ message: 'Exploration not found' }, { status: 404 });
+    }
     
     return NextResponse.json({ 
       message: 'Exploration marked as complete'

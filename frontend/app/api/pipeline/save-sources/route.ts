@@ -33,12 +33,13 @@ export async function POST(req: Request) {
     await connectToDatabase();
     
     // Save source data
-    const sourceData = await SourceData.create({
+    const sourceData = new SourceData({
       explorationId,
       keyword,
       source,
       data: data || []
     });
+    await sourceData.save();
     
     return NextResponse.json({ 
       message: 'Source data saved successfully',
