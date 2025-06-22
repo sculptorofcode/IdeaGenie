@@ -17,6 +17,8 @@ export default function CtaSection() {
   // This would need to be properly implemented based on your auth system
   const signIn = () => {
     console.log("Sign in clicked");
+    // Store the intended destination before signing in
+    sessionStorage.setItem('redirectAfterSignIn', '/form');
     // Your sign in logic here
   };
 

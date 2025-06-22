@@ -128,14 +128,16 @@ export default function Header() {
             <>
               {/* Start Research Button (styled like Growth Tools) */}
               <div className={`transition-all duration-300 delay-200 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}>
-                <Button
-                  className={`flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-purple-500/30 transition-all border-0 ${
-                    scrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2'
-                  }`}
-                >
-                  <StarsIcon className={`transition-transform ${scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4'}`} />
-                  <span className="hidden md:block">Start Research</span>
-                </Button>
+                <Link href="/form">
+                  <Button
+                    className={`flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-purple-500/30 transition-all border-0 ${
+                      scrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2'
+                    }`}
+                  >
+                    <StarsIcon className={`transition-transform ${scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4'}`} />
+                    <span className="hidden md:block">Start Research</span>
+                  </Button>
+                </Link>
               </div>
             </>
           )}          
@@ -148,6 +150,7 @@ export default function Header() {
                   className={`border-white/30 text-white hover:bg-white/10 hover:text-white hover:border-white/50 shadow-sm backdrop-blur-sm transition-all ${
                     scrolled ? 'px-3 py-1 text-sm' : 'px-4 py-2'
                   }`}
+                  onClick={() => sessionStorage.setItem('redirectAfterSignIn', '/form')}
                 >
                   Sign In
                 </Button>

@@ -51,6 +51,8 @@ const HeroSection = () => {
   const handleButtonClick = () => {
     setIsClicked(true);
     if (!user) {
+      // Store the intended destination before signing in
+      sessionStorage.setItem('redirectAfterSignIn', '/form');
       signIn();
     }
   };
