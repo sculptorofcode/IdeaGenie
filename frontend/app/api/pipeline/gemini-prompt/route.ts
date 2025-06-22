@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     
     Based on this information, provide the following:
     
-    1. PROBLEMS: List 3-5 problems that people face related to "${mainKeyword}" based on the context. Format each as "Problem: {title}, Context: {brief context}, Pain point: {specific pain}, Emotions: [{emotions}]"
+    1. PROBLEMS: List 3 problems that people face related to "${mainKeyword}" based on the context. Format each as "Problem: {title}, Context: {brief context}, Pain point: {specific pain}, Emotions: [{emotions}]"
     
     2. PRODUCT IDEAS: Suggest 3-5 potential product ideas that could solve these problems. Format each as "Product: {product name}, Description: {what it does}, Problem solved: {which problem}, Target audience: {who would use it}, Key features: {list key features}"
     
